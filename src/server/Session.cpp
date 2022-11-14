@@ -40,19 +40,19 @@ void Session::HandleRead(const boost::system::error_code& error, size_t uBytesTr
         {
             const std::string sUsername = json["Username"];
             const std::string sPassword = json["Password"];
-            sReply = RequestHandler::RegisterNewUser(sUsername, sPassword);
+            sReply = RequestHandler::RegisterNewUser(sUsername, sPassword).dump();
         }
         else if (sReqType == Requests::Authorization)
         {
             const std::string sUsername = json["Username"];
             const std::string sPassword = json["Password"];
-            sReply = RequestHandler::AuthorizeUser(sUsername, sPassword);
+            sReply = RequestHandler::AuthorizeUser(sUsername, sPassword).dump();
         }
         else if (sReqType == Requests::RemoveUser)
         {
             const std::string sUsername = json["Username"];
             const std::string sPassword = json["Password"];
-            sReply = RequestHandler::RemoveUser(sUsername, sPassword);
+            sReply = RequestHandler::RemoveUser(sUsername, sPassword).dump();
         }
         else
         {

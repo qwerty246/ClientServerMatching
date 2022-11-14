@@ -62,7 +62,7 @@ bool Client::RegistrationProcess()
                 std::cout << "User with the same name already exists." << std::endl;
                 return false;
             }
-            break;
+            return true;
         }
         case 2:
         {
@@ -81,7 +81,7 @@ bool Client::RegistrationProcess()
                 std::cout << "Invalid password." << std::endl;
                 return false;
             }
-            break;
+            return true;
         }
         case 3:
         {
@@ -477,12 +477,12 @@ std::string Client::Registration(std::string_view sUsername, std::string_view sP
     req["Username"] = sUsername;
     req["Password"] = sPassword;
     SendMessage(req);
-    std::string sReply = ReadMessage();
-    if (sReply != Registration::UserExist)
+    nlohmann::json reply = nlohmann::json::parse(ReadMessage());
+    if (reply["Message"] != Registration::UserExist)
     {
-        _sUserId = sReply;
+        _sUserId = reply["Message"];
     }
-    return sReply;
+    return reply["Message"];
 }
 
 std::string Client::Authorization(std::string_view sUsername, std::string_view sPassword)
@@ -492,13 +492,13 @@ std::string Client::Authorization(std::string_view sUsername, std::string_view s
     req["Username"] = sUsername;
     req["Password"] = sPassword;
     SendMessage(req);
-    std::string sReply = ReadMessage();
-    if (sReply != Registration::UserNotExist &&
-        sReply != Registration::InvalidPassword)
+    nlohmann::json reply = nlohmann::json::parse(ReadMessage());
+    if (reply["Message"] != Registration::UserNotExist &&
+        reply["Message"] != Registration::InvalidPassword)
     {
-        _sUserId = sReply;
+        _sUserId = reply["Message"];
     }
-    return sReply;
+    return reply["Message"];
 }
 
 std::string Client::RemoveUser(std::string_view sUsername, std::string_view sPassword)
@@ -508,12 +508,12 @@ std::string Client::RemoveUser(std::string_view sUsername, std::string_view sPas
     req["Username"] = sUsername;
     req["Password"] = sPassword;
     SendMessage(req);
-    std::string sReply = ReadMessage();
-    if (sReply != Registration::SuccessfullyRemoved)
+    nlohmann::json reply = nlohmann::json::parse(ReadMessage());
+    if (reply["Message"] != Registration::SuccessfullyRemoved)
     {
         _sUserId.clear();
     }
-    return sReply;
+    return reply["Message"];
 }
 
 std::string Client::ShowBalance()

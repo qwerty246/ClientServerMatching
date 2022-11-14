@@ -2,19 +2,25 @@
 #include "Core.h"
 #include <hpp/Common.hpp>
 
-std::string RequestHandler::AuthorizeUser(std::string_view sUsername, std::string_view sPassword)
+nlohmann::json RequestHandler::RegisterNewUser(std::string_view sUsername, std::string_view sPassword)
 {
-    return Core::GetCore().AuthorizeUser(sUsername, sPassword);
+    nlohmann::json reply;
+    reply["Message"] = Core::GetCore().RegisterNewUser(sUsername, sPassword);
+    return reply;
 }
 
-std::string RequestHandler::RegisterNewUser(std::string_view sUsername, std::string_view sPassword)
+nlohmann::json RequestHandler::AuthorizeUser(std::string_view sUsername, std::string_view sPassword)
 {
-    return Core::GetCore().RegisterNewUser(sUsername, sPassword);
+    nlohmann::json reply;
+    reply["Message"] = Core::GetCore().AuthorizeUser(sUsername, sPassword);
+    return reply;
 }
 
-std::string RequestHandler::RemoveUser(std::string_view sUsername, std::string_view sPassword)
+nlohmann::json RequestHandler::RemoveUser(std::string_view sUsername, std::string_view sPassword)
 {
-    return Core::GetCore().RemoveUser(sUsername, sPassword);
+    nlohmann::json reply;
+    reply["Message"] = Core::GetCore().RemoveUser(sUsername, sPassword);
+    return reply;
 }
 
 nlohmann::json RequestHandler::ShowBalance(const UserPtr& pUser)

@@ -19,15 +19,26 @@ void TestRegistration::TearDown()
 
 TEST_F(TestRegistration, Successfull)
 {
-    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), "0");
-    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername2, _sPassword), "1");
-    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername1, _sPassword), Registration::SuccessfullyRemoved);
-    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername2, _sPassword), Registration::SuccessfullyRemoved);
+    nlohmann::json expectedReply;
+    expectedReply["Message"] = "0";
+    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), expectedReply);
+    expectedReply["Message"] = "1";
+    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername2, _sPassword), expectedReply);
+
+    expectedReply["Message"] = Registration::SuccessfullyRemoved;
+    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername1, _sPassword), expectedReply);
+    expectedReply["Message"] = Registration::SuccessfullyRemoved;
+    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername2, _sPassword), expectedReply);
 }
 
 TEST_F(TestRegistration, UserExist)
 {
-    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), "0");
-    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), Registration::UserExist);
-    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername1, _sPassword), Registration::SuccessfullyRemoved);
+    nlohmann::json expectedReply;
+    expectedReply["Message"] = "0";
+    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), expectedReply);
+    expectedReply["Message"] = Registration::UserExist;
+    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername1, _sPassword), expectedReply);
+
+    expectedReply["Message"] = Registration::SuccessfullyRemoved;
+    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername1, _sPassword), expectedReply);
 }

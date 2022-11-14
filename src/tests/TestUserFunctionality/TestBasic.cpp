@@ -13,8 +13,12 @@ void TestBasic::SetUp()
     nlohmann::json expectedReply;
     for (size_t i = 0; i < 2; i++)
     {
-        ASSERT_EQ(RequestHandler::RegisterNewUser("Username" + std::to_string(i), _sPassword), std::to_string(i));
+        expectedReply.clear();
+        expectedReply["Message"] = std::to_string(i);
+        ASSERT_EQ(RequestHandler::RegisterNewUser("Username" + std::to_string(i), _sPassword), expectedReply);
         _vSellers.push_back(Core::GetCore().GetUser("Username" + std::to_string(i)));
+
+        expectedReply.clear();
         expectedReply["Amount"] = std::to_string(_dInitialAmountUSD);
         ASSERT_EQ(RequestHandler::ReplenishUSD(_vSellers.back(), _dInitialAmountUSD), expectedReply);
         expectedReply["Amount"] = std::to_string(_dInitialAmountRUB);
@@ -22,8 +26,12 @@ void TestBasic::SetUp()
     }
     for (size_t i = 2; i < 4; i++)
     {
-        ASSERT_EQ(RequestHandler::RegisterNewUser("Username" + std::to_string(i), _sPassword), std::to_string(i));
+        expectedReply.clear();
+        expectedReply["Message"] = std::to_string(i);
+        ASSERT_EQ(RequestHandler::RegisterNewUser("Username" + std::to_string(i), _sPassword), expectedReply);
         _vBuyers.push_back(Core::GetCore().GetUser("Username" + std::to_string(i)));
+
+        expectedReply.clear();
         expectedReply["Amount"] = std::to_string(_dInitialAmountUSD);
         ASSERT_EQ(RequestHandler::ReplenishUSD(_vBuyers.back(), _dInitialAmountUSD), expectedReply);
         expectedReply["Amount"] = std::to_string(_dInitialAmountRUB);

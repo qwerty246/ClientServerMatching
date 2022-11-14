@@ -10,7 +10,9 @@ TestRemovingUser::TestRemovingUser() :
 
 void TestRemovingUser::SetUp()
 {
-    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername, _sPassword), "0");
+    nlohmann::json expectedReply;
+    expectedReply["Message"] = "0";
+    ASSERT_EQ(RequestHandler::RegisterNewUser(_sUsername, _sPassword), expectedReply);
 }
 
 void TestRemovingUser::TearDown()
@@ -22,10 +24,14 @@ void TestRemovingUser::TearDown()
 
 TEST_F(TestRemovingUser, InvalidPassword)
 {
-    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername, _sPassword + "Invalid"), Registration::InvalidPassword);
+    nlohmann::json expectedReply;
+    expectedReply["Message"] = Registration::InvalidPassword;
+    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername, _sPassword + "Invalid"), expectedReply);
 }
 
 TEST_F(TestRemovingUser, UserNotExist)
 {
-    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername + "Unknown", _sPassword), Registration::UserNotExist);
+    nlohmann::json expectedReply;
+    expectedReply["Message"] = Registration::UserNotExist;
+    ASSERT_EQ(RequestHandler::RemoveUser(_sUsername + "Unknown", _sPassword), expectedReply);
 }

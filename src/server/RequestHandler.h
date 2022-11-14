@@ -10,9 +10,9 @@
 class RequestHandler
 {
 public:
-    static std::string AuthorizeUser(std::string_view sUsername, std::string_view sPassword);
-    static std::string RegisterNewUser(std::string_view sUsername, std::string_view sPassword);
-    static std::string RemoveUser(std::string_view sUsername, std::string_view sPassword);
+    static nlohmann::json RegisterNewUser(std::string_view sUsername, std::string_view sPassword);
+    static nlohmann::json AuthorizeUser(std::string_view sUsername, std::string_view sPassword);
+    static nlohmann::json RemoveUser(std::string_view sUsername, std::string_view sPassword);
 
     static nlohmann::json ShowBalance(const UserPtr& pUser);
     static nlohmann::json ShowUserActiveOffers(const UserPtr& pUser);
