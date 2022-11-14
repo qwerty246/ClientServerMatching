@@ -42,11 +42,11 @@ User
 
 Проект собирается с помощью cmake, особых параметров не требуется. Пример сборки:
 
-cd ClientServerMatching
-mkdir build
-cd build
-cmake ..
-cmake --build .
+*cd ClientServerMatching*
+*mkdir build*
+*cd build*
+*cmake ..*
+*cmake --build .*
 
 Я решил задать путь создания приложений и библиотек по пути ClientServerMatching/bin/
 
